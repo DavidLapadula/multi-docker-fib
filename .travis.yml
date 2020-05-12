@@ -1,4 +1,7 @@
+language: generic
+
 sudo: required
+
 services: 
     - docker
 
@@ -6,15 +9,13 @@ before_install:
     - docker build 23david73/react-test -f ./client/Dockerfile.dev ./client
 
 script: 
-    - docker run -e CI=true 23david73/react-test npm test
+    - docker run -e CI=true 23david73/react-test npm run test
 
 after_success:
     - docker build -t 23david73/multi-client ./client
     - docker build -t 23david73/multi-nginx ./nginx
     - docker build -t 23david73/multi-server ./server
     - docker build -t 23david73/multi-worker ./worker
-
-language: generic
 
 # Authenticate with Dockerhub
 - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
